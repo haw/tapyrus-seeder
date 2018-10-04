@@ -18,4 +18,4 @@ screen -dmS seeder
 sleep 3s
 
 # launch seeder
-screen -S seeder -X -p 0 exec sudo dnsseed -h ${HOST} -n ${HOST} -m ${EMAIL} --testnet
+screen -S seeder -X -p 0 exec sudo dnsseed -h ${HOST} -n ${NSHOST} -m ${EMAIL} --testnet
