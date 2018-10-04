@@ -2,7 +2,7 @@
 source /etc/profile.d/aws-apitools-common.sh
 
 ZONEID=ZFCGYZ1BBZMF2
-NSHOST=ns.seed.tapyrus.dev.haw.biz
+NSHOST=ns.tapyrus.dev.haw.biz
 HOST=seed.tapyrus.dev.haw.biz
 EMAIL=nakajo@chaintope.com
 
