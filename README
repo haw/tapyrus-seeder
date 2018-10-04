@@ -60,3 +60,20 @@ $ iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-port 5353
 
 If properly configured, this will allow you to run dnsseed in userspace, using
 the -p 5353 option.
+
+
+SETUP ON AWS
+------------
+Recommended OS type is Amazon Linux.
+Need allow access udp 53 port at EC2 instance.
+
+Get setup script for aws linux and run bellow:
+
+$ curl -o aws-linux-setup.sh https://raw.githubusercontent.com/chaintope/tapyrus-seeder/master/aws-linux-setup.sh
+$ chmod 0755 aws-linux-setup.sh
+$ ./aws-linux-setup.sh
+
+modify domain name in `tapyrus-seeder/launch.sh` to depend your environment.
+
+If you want to start seeder automatically, then register tapyrus-seeder/launch.sh to crontab:
+$ echo '@reboot /home/ec2-user/tapyrus-seeder/launch.sh' | crontab
