@@ -69,11 +69,11 @@ Need allow access udp 53 port at EC2 instance.
 
 Get setup script for aws linux and run bellow:
 
-$ curl -o aws-linux-setup.sh https://raw.githubusercontent.com/chaintope/tapyrus-seeder/master/aws-linux-setup.sh
+$ curl -o aws-linux-setup.sh https://raw.githubusercontent.com/chaintope/tapyrus-seeder/master/scripts/aws-linux-setup.sh
 $ chmod 0755 aws-linux-setup.sh
 $ ./aws-linux-setup.sh
 
-modify domain name in `tapyrus-seeder/launch.sh` to depend your environment.
+modify domain name in `tapyrus-seeder/scripts/launch.sh` to depend your environment.
 
-If you want to start seeder automatically, then register tapyrus-seeder/launch.sh to crontab:
-$ echo '@reboot /home/ec2-user/tapyrus-seeder/launch.sh' | crontab
+If you want to start seeder automatically, then register tapyrus-seeder/scripts/launch.sh to crontab:
+$ echo '@reboot /home/ec2-user/tapyrus-seeder/scripts/launch.sh' | crontab
