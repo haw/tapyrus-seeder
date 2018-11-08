@@ -397,19 +397,23 @@ extern "C" void* ThreadStats(void*) {
   return nullptr;
 }
 
-static const string mainnet_seeds[] = {"seed.tapyrus.dev.haw.biz"};
-static const string testnet_seeds[] = {"seed.tapyrus.dev.haw.biz"};
+static const string mainnet_seeds[] = {"seed.tapyrus.dev.haw.biz", ""};
+static const string testnet_seeds[] = {"seed.tapyrus.dev.haw.biz", ""};
 static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
   if (!fTestNet){
     db.Add(CService("kjy2eqzk4zwi5zd3.onion", 8333), true);
   }
+
   do {
     for (int i=0; seeds[i] != ""; i++) {
       vector<CNetAddr> ips;
+        printf("\nhoge seeds=%s\n", seeds[i].c_str());
       LookupHost(seeds[i].c_str(), ips);
+        printf("\nhoge1\n");
       for (vector<CNetAddr>::iterator it = ips.begin(); it != ips.end(); it++) {
+          printf("hoge2 \n");
         db.Add(CService(*it, GetDefaultPort()), true);
       }
     }
