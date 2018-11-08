@@ -456,7 +456,7 @@ int main(int argc, char **argv) {
   if (opts.fUseTestNet) {
       printf("Using testnet.\n");
       // 0x75 0x9A 0x83 0x74
-      pchMessageStart[0] = 0x74;
+      pchMessageStart[0] = 0x75;
       pchMessageStart[1] = 0x9a;
       pchMessageStart[2] = 0x83;
       pchMessageStart[3] = 0x74;
