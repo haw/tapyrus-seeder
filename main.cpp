@@ -82,17 +82,17 @@ public:
           host = optarg;
           break;
         }
-        
+
         case 'm': {
           mbox = optarg;
           break;
         }
-        
+
         case 'n': {
           ns = optarg;
           break;
         }
-        
+
         case 't': {
           int n = strtol(optarg, NULL, 10);
           if (n > 0 && n < 1000) nThreads = n;
@@ -397,8 +397,8 @@ extern "C" void* ThreadStats(void*) {
   return nullptr;
 }
 
-static const string mainnet_seeds[] = {"seed.tapyrus.dev.haw.biz", ""};
-static const string testnet_seeds[] = {"seed.tapyrus.dev.haw.biz", ""};
+static const string mainnet_seeds[] = {"seed.tapyrus.chaintope.com", ""};
+static const string testnet_seeds[] = {"seed.tapyrus.dev.chaintope.com", ""};
 static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
@@ -486,6 +486,14 @@ int main(int argc, char **argv) {
         db.ResetIgnores();
     printf("done\n");
   }
+
+  static const string master_nodes[] = {"52.194.235.230", ""};
+  for (int i = 0; master_nodes[i] != ""; i++) {
+    CAddress me(CService(master_nodes[i], GetDefaultPort(fTestNet)));
+    db.Add(me, true);
+  }
+  printf("add master nodes done.");
+
   pthread_t threadDns, threadSeed, threadDump, threadStats;
   if (fDNS) {
     printf("Starting %i DNS threads for %s on %s (port %i)...", opts.nDnsThreads, opts.host, opts.ns, opts.nPort);

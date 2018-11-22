@@ -1,9 +1,9 @@
 #!/bin/bash
 source /etc/profile.d/aws-apitools-common.sh
 
-ZONEID=ZFCGYZ1BBZMF2
-NSHOST=ns.tapyrus.dev.haw.biz
-HOST=seed.tapyrus.dev.haw.biz
+ZONEID=ZKAPA71BL90VS
+NSHOST=ns.tapyrus.dev.chaintope.com
+HOST=seed.tapyrus.dev.chaintope.com
 EMAIL=nakajo@chaintope.com
 
 TTL=60
