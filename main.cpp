@@ -183,7 +183,7 @@ extern "C" void* ThreadCrawler(void* data) {
       res.nClientV = 0;
       res.nHeight = 0;
       res.strClientV = "";
-      bool getaddr = res.ourLastSuccess + 86400 < now;
+      bool getaddr = res.ourLastSuccess < now;
       res.fGood = TestNode(res.service,res.nBanTime,res.nClientV,res.strClientV,res.nHeight,getaddr ? &addr : NULL);
     }
     db.ResultMany(ips);
@@ -391,14 +391,20 @@ extern "C" void* ThreadStats(void*) {
       requests += dnsThread[i]->dns_opt.nRequests;
       queries += dnsThread[i]->dbQueries;
     }
-    printf("%s %i/%i available (%i tried in %is, %i new, %i active), %i banned; %llu DNS requests, %llu db queries", c, stats.nGood, stats.nAvail, stats.nTracked, stats.nAge, stats.nNew, stats.nAvail - stats.nTracked - stats.nNew, stats.nBanned, (unsigned long long)requests, (unsigned long long)queries);
+    printf("%s %i/%i available (%i tried in %is, %i new, %i active), %i banned; %llu DNS requests, %llu db queries\n", c, stats.nGood, stats.nAvail, stats.nTracked, stats.nAge, stats.nNew, stats.nAvail - stats.nTracked - stats.nNew, stats.nBanned, (unsigned long long)requests, (unsigned long long)queries);
     Sleep(1000);
   } while(1);
   return nullptr;
 }
 
-static const string mainnet_seeds[] = {"seed.tapyrus.chaintope.com", ""};
-static const string testnet_seeds[] = {"seed.tapyrus.dev.chaintope.com", ""};
+static const string mainnet_seeds[] = {
+        "seed.tapyrus.dev.chaintope.com",
+        "static-seed.tapyrus.dev.chaintope.com",
+        ""};
+static const string testnet_seeds[] = {
+        "seed.tapyrus.dev.chaintope.com",
+        "static-seed.tapyrus.dev.chaintope.com",
+        ""};
 static const string *seeds = mainnet_seeds;
 
 extern "C" void* ThreadSeeder(void*) {
@@ -413,7 +419,7 @@ extern "C" void* ThreadSeeder(void*) {
         db.Add(CService(*it, GetDefaultPort()), true);
       }
     }
-    Sleep(1800000);
+    Sleep(3 * 60 * 1000);
   } while(1);
   return nullptr;
 }
@@ -486,13 +492,6 @@ int main(int argc, char **argv) {
         db.ResetIgnores();
     printf("done\n");
   }
-
-  static const string master_nodes[] = {"52.194.235.230", ""};
-  for (int i = 0; master_nodes[i] != ""; i++) {
-    CAddress me(CService(master_nodes[i], GetDefaultPort(fTestNet)));
-    db.Add(me, true);
-  }
-  printf("add master nodes done.");
 
   pthread_t threadDns, threadSeed, threadDump, threadStats;
   if (fDNS) {

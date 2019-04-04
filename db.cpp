@@ -189,8 +189,8 @@ void CAddrDb::GetIPs_(set<CNetAddr>& ips, uint64_t requestedFlags, int max, cons
   if (!goodIdFiltered.size())
     return;
 
-  if (max > goodIdFiltered.size() / 2)
-    max = goodIdFiltered.size() / 2;
+  if (max > goodIdFiltered.size())
+    max = goodIdFiltered.size();
   if (max < 1)
     max = 1;
 
