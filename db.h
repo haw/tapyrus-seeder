@@ -234,7 +234,10 @@ public:
       stats.nTracked = ourId.size();
       stats.nGood = goodId.size();
       stats.nNew = unkId.size();
-      stats.nAge = time(NULL) - idToInfo[ourId[0]].ourLastTry;
+      stats.nAge = time(NULL);
+      if(!(idToInfo.size() == 0 || ourId.size() == 0)) {
+          stats.nAge = time(NULL) - idToInfo[ourId[0]].ourLastTry;
+      }
     }
   }
 
