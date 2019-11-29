@@ -14,7 +14,7 @@
 
 #define REQUIRE_VERSION 70001
 
-static inline int GetRequireHeight(const bool testnet = fTestNet)
+static inline int GetRequireHeight()
 {
     return 1;
 }

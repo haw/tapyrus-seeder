@@ -15,15 +15,11 @@
 
 using namespace std;
 
-bool fTestNet = false;
-
 class CDnsSeedOpts {
 public:
     int nThreads;
     int nPort;
     int nDnsThreads;
-    int fUseTestNet;
-    int fUseParadium;
     int fWipeBan;
     int fWipeIgnore;
     const char *mbox;
@@ -35,7 +31,7 @@ public:
     std::set<uint64_t> filter_whitelist;
 
     CDnsSeedOpts() : nThreads(96), nDnsThreads(4), nPort(53), mbox(NULL), ns(NULL), host(NULL), tor(NULL),
-                     fUseTestNet(false), fWipeBan(false), fWipeIgnore(false), ipv4_proxy(NULL), ipv6_proxy(NULL) {}
+                     fWipeBan(false), fWipeIgnore(false), ipv4_proxy(NULL), ipv6_proxy(NULL) {}
 
     void ParseCommandLine(int argc, char **argv) {
         static const char *help = "Bitcoin-seeder\n"
@@ -52,8 +48,6 @@ public:
                                   "-i <ip:port>    IPV4 SOCKS5 proxy IP/Port\n"
                                   "-k <ip:port>    IPV6 SOCKS5 proxy IP/Port\n"
                                   "-w f1,f2,...    Allow these flag combinations as filters\n"
-                                  "--testnet       Use testnet\n"
-                                  "--paradium      Use paradium network\n"
                                   "--wipeban       Wipe list of banned nodes\n"
                                   "--wipeignore    Wipe list of ignored nodes\n"
                                   "-?, --help      Show this text\n"
@@ -72,8 +66,6 @@ public:
                     {"proxyipv4",  required_argument, 0,             'i'},
                     {"proxyipv6",  required_argument, 0,             'k'},
                     {"filter",     required_argument, 0,             'w'},
-                    {"testnet",    no_argument,       &fUseTestNet,  1},
-                    {"paradium",   no_argument,       &fUseParadium, 1},
                     {"wipeban",    no_argument,       &fWipeBan,     1},
                     {"wipeignore", no_argument,       &fWipeBan,     1},
                     {"help",       no_argument,       0,             'h'},
@@ -414,16 +406,8 @@ extern "C" void *ThreadStats(void *) {
 }
 
 static const string mainnet_seeds[] = {
-        "seed.tapyrus.dev.chaintope.com",
-        "static-seed.tapyrus.dev.chaintope.com",
-        ""};
-static const string testnet_seeds[] = {
-        "seed.tapyrus.dev.chaintope.com",
-        "static-seed.tapyrus.dev.chaintope.com",
-        ""};
-static const string paradium_seeds[] = {
-        "seed.paradium.dev.chaintope.com",
-        "static-seed.paradium.dev.chaintope.com",
+        "seed-tapyrus.blockchain.haw.biz",
+        "static-seed-tapyrus.tapyrus.blockhacin.haw.biz",
         ""};
 static const string *seeds = mainnet_seeds;
 
@@ -477,29 +461,6 @@ int main(int argc, char **argv) {
         }
     }
     bool fDNS = true;
-    if (opts.fUseTestNet) {
-        printf("Using testnet.\n");
-        // 0x75 0x9A 0x83 0x74
-        pchMessageStart[0] = 0x75;
-        pchMessageStart[1] = 0x9a;
-        pchMessageStart[2] = 0x83;
-        pchMessageStart[3] = 0x74;
-        seeds = testnet_seeds;
-        fTestNet = true;
-    } else if (opts.fUseParadium) {
-        printf("Using paradium.\n");
-        /**
-         * Paradium networkId is 101.
-         * networkId=1 magic bytes is: 01 FF F0 00.
-         * thus, paradium magic byes is: 01 FF F0 64.
-         */
-        pchMessageStart[0] = 0x01;
-        pchMessageStart[1] = 0xff;
-        pchMessageStart[2] = 0xf0;
-        pchMessageStart[3] = 0x64;
-        seeds = paradium_seeds;
-        fTestNet = false;
-    }
     if (!opts.ns) {
         printf("No nameserver set. Not starting DNS server.\n");
         fDNS = false;

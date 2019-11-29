@@ -22,8 +22,9 @@ static const char* ppszTypeName[] =
     "block",
 };
 
-// 01FFF000
-unsigned char pchMessageStart[4] = { 0x01, 0xff, 0xf0, 0x00 };
+// HAW Networkd Id = 721
+// and Magic Byets is 3353055 + 721 =  0xD0F2FF01
+unsigned char pchMessageStart[4] = { 0x01, 0xff, 0xf2, 0xd0 };
 
 CMessageHeader::CMessageHeader()
 {
